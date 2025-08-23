@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"github.com/rachitnimje/trackle-web/config"
 	"github.com/rachitnimje/trackle-web/middleware"
 	"github.com/rachitnimje/trackle-web/routes"
