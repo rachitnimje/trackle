@@ -11,11 +11,11 @@ import (
 
 func CORSMiddleware() gin.HandlerFunc {
 	// Default development origins
-	allowedOrigins := []string{"http://localhost:3000", "http://localhost:5173", "http://localhost:8080"}
+	// allowedOrigins := []string{"http://localhost:3000", "http://localhost:5173", "http://localhost:8080"}
 	
-	// Use environment variable for production
+	var allowedOrigins []string  
 	if corsOrigins := os.Getenv("CORS_ALLOWED_ORIGINS"); corsOrigins != "" {
-		allowedOrigins = strings.Split(corsOrigins, ",")
+		allowedOrigins := strings.Split(corsOrigins, ",")
 		// Trim spaces from each origin
 		for i := range allowedOrigins {
 			allowedOrigins[i] = strings.TrimSpace(allowedOrigins[i])
