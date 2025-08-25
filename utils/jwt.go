@@ -2,8 +2,6 @@ package utils
 
 import (
 	"errors"
-	"github.com/joho/godotenv"
-	"log"
 	"os"
 	"time"
 

@@ -6,7 +6,6 @@ import (
 
 	"github.com/rachitnimje/trackle-web/models"
 
-	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
