@@ -12,10 +12,10 @@ import (
 )
 
 func ConnectDB() *gorm.DB {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	log.Fatal("Error loading .env file")
+	// }
 
 	// dsn := fmt.Sprintf(
 	// 	"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
