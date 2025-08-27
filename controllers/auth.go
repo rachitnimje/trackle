@@ -70,7 +70,25 @@ func Register(db *gorm.DB) gin.HandlerFunc {
 		// Check if user already exists
 		var existingProfile models.ProfileUser
 		if err := db.Where("email = ? OR username = ?", utils.TrimAndLower(req.Email), req.Username).First(&existingProfile).Error; err == nil {
-			appErr := utils.NewDuplicateEntryError("User with this email or username already exists", nil)
+			// Check which field is duplicated for a more specific message
+			var conflictField string
+			if existingProfile.Email == utils.TrimAndLower(req.Email) {
+				conflictField = "email"
+			} else if existingProfile.Username == req.Username {
+				conflictField = "username"
+			} else {
+				conflictField = "account"
+			}
+			var userMsg string
+			switch conflictField {
+			case "email":
+				userMsg = "This email is already registered. Please use a different email."
+			case "username":
+				userMsg = "This username is already taken. Please choose another username."
+			default:
+				userMsg = "An account with these details already exists."
+			}
+			appErr := utils.NewDuplicateEntryError(userMsg, nil)
 			utils.ErrorResponse(c, appErr.StatusCode, appErr.Message, appErr)
 			return
 		}
