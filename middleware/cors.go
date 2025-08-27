@@ -13,17 +13,16 @@ func CORSMiddleware() gin.HandlerFunc {
 	// Default development origins
 	// allowedOrigins := []string{"http://localhost:3000", "http://localhost:5173", "http://localhost:8080"}
 	
-	var allowedOrigins []string  
-	if corsOrigins := os.Getenv("CORS_ALLOWED_ORIGINS"); corsOrigins != "" {
-		allowedOrigins := strings.Split(corsOrigins, ",")
-		// Trim spaces from each origin
+	var allowedOrigins []string
+	corsOrigins := os.Getenv("CORS_ALLOWED_ORIGINS")
+	if corsOrigins != "" {
+		allowedOrigins = strings.Split(corsOrigins, ",")
 		for i := range allowedOrigins {
 			allowedOrigins[i] = strings.TrimSpace(allowedOrigins[i])
 		}
 	}
 
-	return cors.New(cors.Config{
-		AllowOrigins:     allowedOrigins,
+	config := cors.Config{
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"},
 		AllowHeaders:     []string{
 			"Origin", 
@@ -38,5 +37,13 @@ func CORSMiddleware() gin.HandlerFunc {
 		ExposeHeaders:    []string{"Content-Length", "Set-Cookie"},
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
-	})
+	}
+
+	if len(allowedOrigins) > 0 {
+		config.AllowOrigins = allowedOrigins
+	} else {
+		panic("CORS_ALLOWED_ORIGINS environment variable is not set or empty. Refusing to start with no allowed origins.")
+	}
+
+	return cors.New(config)
 }
